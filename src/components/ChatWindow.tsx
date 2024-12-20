@@ -4,7 +4,6 @@ import { useStore } from '../store/useStore';
 import 'regenerator-runtime/runtime';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import axios from 'axios';
 export function ChatWindow() {
   const { chats, currentChat, user, addMessage } = useStore();
   const [input, setInput] = useState('');
@@ -100,17 +99,17 @@ export function ChatWindow() {
 
   if (!currentChat) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#424242">
-        <p className="text-white text-lg mt-3">Select or create a chat to get started</p>
+      <div className="flex-1 flex items-center md:justify-center justify-start bg-red-50 over">
+        <p className="text-white md:text-lg text-sm mt-3">Select or create a chat to get started</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-4rem)] ml-64 bg-[#212121]">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex-1 flex flex-col h-[calc(100vh-4rem)] ">
+      <div className="flex-1 md:overflow-y-auto overflow-hidden md:p-4 p-0 space-y-4   ">
         {!user.isPremium && messages.length > 10 && (
-          <div className="text-center py-2 bg-[#424242] text-indigo-700 rounded-lg">
+          <div className="text-center py-2 bg-[#424242] text-indigo-50 rounded-lg">
             Upgrade to premium to see your full chat history
           </div>
         )}
@@ -119,7 +118,7 @@ export function ChatWindow() {
             key={message.id}
             className={`flex ${
               message.role === 'user' ? 'justify-end' : 'justify-start'
-            }`}
+            } p-3`}
           >
            {/* userIcon */}
             {message.role !== 'user' && (
@@ -129,7 +128,7 @@ export function ChatWindow() {
       </div>
     )}
             <div
-              className={`max-w-[70%] rounded-lg p-3 ${
+              className={`max-w-[70%] rounded-lg md:p-3 p-2 ${
                 message.role === 'user'
                   ? ' text-[#ECECEC] bg-[#2f2f2f]'
                   : ' text-[#ECECEC] '
@@ -140,7 +139,7 @@ export function ChatWindow() {
           </div>
         ))}
       </div>
-      <div className="p-4 border-t border-gray-900">
+      <div className="p-4  ">
         <div className="flex space-x-2">
           <button
             onClick={toggleRecording}
@@ -170,7 +169,7 @@ export function ChatWindow() {
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Type your message..."
-            className="flex-1 border border-gray-900 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 bg-[#2f2f2f]"
+            className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 bg-[#2f2f2f] w-full "
           />
           <button
             onClick={handleSend}

@@ -14,13 +14,13 @@ export function PremiumBanner() {
   };
 
   return (
-    <div className="fixed top-3 center-0">
+    <div className="">
       <button
         onClick={handleUpgrade}
-        className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg shadow-lg hover:from-yellow-500 hover:to-yellow-700 transition-all"
+        className="flex items-center md:space-x-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white md:px-4 md:py-2 p-1 rounded-lg shadow-lg hover:from-yellow-500 hover:to-yellow-700 transition-all "
       >
-        <Crown className="h-5 w-5" />
-        <span>Upgrade to Premium</span>
+        <Crown className="md:h-5 md:w-5" />
+        <span className='text-sm md:text-lg'>Upgrade to Premium</span>
       </button>
     </div>
   );
