@@ -3,6 +3,7 @@ export interface Message {
   content: string;
   role: 'user' | 'assistant';
   timestamp: number;
+  images:String,
 }
 
 export interface Chat {
@@ -10,10 +11,10 @@ export interface Chat {
   title: string;
   messages: Message[];
   createdAt: number;
-}
+} 
 
 export interface User {
   id: string;
-  name: string;
+  name: string; 
   isPremium: boolean;
-}
+} 

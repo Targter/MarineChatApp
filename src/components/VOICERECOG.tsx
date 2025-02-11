@@ -32,15 +32,6 @@ function VoiceRecognition({ isListening, inputdata }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (transcript) {
-  //     if (silenceTimer) clearTimeout(silenceTimer);
-  //     silenceTimer = setTimeout(() => {
-  //       finalizeSegment(); // Finalize the segment after 1 sec of silence
-  //     }, 1000);
-  //   }
-  //   return () => clearTimeout(silenceTimer);
-  // }, [transcript]);
 
   return (
     <div>

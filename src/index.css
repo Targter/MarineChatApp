@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add this CSS to your styles */
+
+.typing-effect {
+  display: inline-block;
+  font-family: "Courier New", Courier, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #fff; /* Cursor effect */
+  animation: typing 3s steps(30) 1s forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.chat-container {
+  /* width: 80%; */
+  /* height: 500px; Set a height to enable scrolling */
+  /* overflow-y: auto; Enable vertical scrolling */
+  scrollbar-width: thin; /* Firefox support */
+  scrollbar-color: #2a2d2f #1e1e1e; /* Thumb color + Track color */
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+.chat-container::-webkit-scrollbar {
+  width: 1px; /* Make it thinner */
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: #222; /* Dark track */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: #424242; /* Blue scrollbar */
+  border-radius: 1px;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+  background: #424242; /* Darker blue */
+}
