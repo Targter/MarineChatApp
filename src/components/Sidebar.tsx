@@ -45,14 +45,14 @@ useEffect(() => {
 }, [fetchTitles]);
    
     return (
-      <div className={`lg:w-64 md:w-44 w-28 bg-[#171717]  max-h-[calc(100vh-4rem)]  border-r overflow-y-auto ${
+      <div className={`lg:w-64 md:w-44 min-w-[170px] bg-[#171717]  max-h-[calc(100vh-4rem)]  border-r overflow-y-auto ${
         isSidebarOpen  ? 'block' : 'hidden'
       } flex flex-col items-center`}>
       <div className='w-full flex justify-center p-2 h-auto '>  
         <button
                 onClick={addChat}
                 className="sm:inline-flex  
-                items-center block px-6 py-2 border border-transparent sm:text-lg text-sm font-medium rounded-md text-[#ECECEC] bg-[#2f2f2f] hover:bg-[#0c0c0c] "
+                items-center block sm:px-6 px-3 py-2 border border-transparent sm:text-lg text-sm font-medium rounded-md text-[#ECECEC] bg-[#2f2f2f] hover:bg-[#0c0c0c] "
               >
                 <Plus className="sm:h-5 sm:w-5 sm:mr-2 text-sm" />
                 <span className='sm:block hidden'>New Chat</span>

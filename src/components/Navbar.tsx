@@ -41,24 +41,24 @@ const formattedEndDate = user.subscriptionEndDate
 : "N/A";
   return (
     <nav className="bg-[#414141] border-b border-gray-800 fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+      <div className="max-w-7xl md:mx-auto md:px-4 sm:px-6 lg:px-8">
+        <div className="flex md:justify-between justify-evenly h-16">
           {/* Left Section: Sidebar Toggle & Logo */}
           <div className="flex">
-            <div className="mr-11 p-3 flex items-center cursor-pointer rounded-lg bg-[#414141] hover:bg-[#2a2929]" onClick={toggleSidebar}>
+            <div className="sm:mr-11 mr-2 sm:p-3 flex items-center cursor-pointer rounded-lg bg-[#414141] hover:bg-[#2a2929]" onClick={toggleSidebar}>
               <Menu />
             </div>
             
             <a href="/" className='flex items-center'><div className="flex-shrink-0 flex items-center">
-              <Bot className="h-8 w-8 text-gray-900" />
-             <span className="ml-2 text-xl font-bold text-gray-300">Ab Bot</span></div></a>
+              <Bot className="h-8 w-8 text-gray-900 sm:block hidden" />
+             <span className="md:ml-2 md:text-xl font-bold text-gray-300">Ab Bot</span></div></a>
             
           </div>
 
           {/* Right Section: User Info */}
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center md:space-x-6">
             {/* Subscription Info */}
-            <div className="text-gray-400 text-sm">
+            <div className="text-gray-400 md:text-sm text-xs">
               <p>
                 <span className="font-semibold text-white">Plan:</span> {user.subscriptionType || "N/A"}
               </p>
@@ -68,11 +68,11 @@ const formattedEndDate = user.subscriptionEndDate
             </div>
 
             {/* User Info */}
-            <div className="flex items-center">
+            <div className="md:flex items-center hidden ">
               <User className="h-6 w-6 text-gray-400 hover:text-gray-200" />
               <span className="ml-2 text-gray-400 hover:text-gray-200">{user.username}</span>
             </div>
-            <button className='bg-red-600 p-2 rounded-md pl-4 pr-4 ml-4 hover:bg-red-800'><Link to="/Register" onClick={LogoutCall}>Logout</Link></button>
+            <button className='bg-red-600 p-2  ml-2 rounded-md md:pl-4 md:pr-4 md:ml-4 hover:bg-red-800 md:text-xl text-xs'><Link to="/Register" onClick={LogoutCall}>Logout</Link></button>
           </div>
         </div>
       </div>

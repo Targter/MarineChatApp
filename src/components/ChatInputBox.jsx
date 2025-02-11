@@ -14,6 +14,7 @@ const ChatInputBox = memo(() => {
   const { currentChat, addMessage } = useStore();
   const { getIsProcessing, setIsProcessing } = useProcessingStore();
   const { setTypingComplete } = useTypingStore();
+  
   const { subscriptionEndDate } = useUserStore();
 
   const isProcessing = currentChat ? getIsProcessing(currentChat) : false;
@@ -87,7 +88,7 @@ const ChatInputBox = memo(() => {
           placeholder={
             isProcessing ? "Please wait, processing..." : "Type your message..."
           }
-          className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 bg-[#2f2f2f] w-[90%]"
+          className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 bg-[#2f2f2f] md:w-[90%] w-[50px] "
           disabled={isProcessing}
         />
         <button

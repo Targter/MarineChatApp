@@ -15,22 +15,12 @@ const MemoizedChatWindow = memo(ChatWindow);
 const Pagecon = () => {
   // const useNavigatee = useNavigate()
   const { isSidebarOpen } = useSidebarStore();
-  // const Authfunction = async()=>{
-  //   const response = await axios.get("http://localhost:3000/userAuth",{withCredentials:true})
-  //   console.log(response)
-  //   if(!response.data.authenticated) useNavigatee("/Login")
-  // }
-  // useEffect(()=>{
-  //   Authfunction()
-
-  // },[])
-
   return (
     <div className="min-h-screen bg-[#212121] text-white flex md:justify-center justify-end overflow-hidden">
       {/* <Navbar toggleSidebar={toggleSidebar} /> */}
       <MemoizedNavbar />
-      <div className="pt-16 flex w-full">
-        {isSidebarOpen && <MemoizedSidebar />}
+      <div className="pt-16 flex w-full overflow-x-hidden">
+        {isSidebarOpen && <MemoizedSidebar className="w-2/4 min-w-[500px]" />}
         <MemoizedChatWindow />
       </div>
       <UpgradeToPremium />

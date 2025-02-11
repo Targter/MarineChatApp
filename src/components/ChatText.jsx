@@ -68,7 +68,7 @@ const ChatText = () => {
       )}
 
       {!chatStarted && (
-        <div className="h-auto flex flex-col gap-3 justify-center items-center text-2xl mt-[200px]">
+        <div className="h-auto w-full flex flex-col gap-3 justify-center items-center sm:text-2xl text-xl mt-[200px]">
           How can I help you?
         </div>
       )}
@@ -76,7 +76,7 @@ const ChatText = () => {
       <div
         className={`${
           chatStarted && "h-full"
-        } p-5 w-[80%] overflow-y-auto chat-container`}
+        } sm:p-5 w-[79%] overflow-hidden overflow-y-auto chat-container  `}
       >
         {displayedMessages.map((message, index) => (
           <div
@@ -117,19 +117,19 @@ const ChatText = () => {
                 </ReactMarkdown>
               )}
               {message.images && message.images.length > 0 && (
-                <div className="flex flex-wrap mb-4">
+                <div className="flex flex-wrap mb-4 w-[300px] sm:w-full ">
                   {message.images.map((image, imgIndex) => (
                     <a
                       key={imgIndex}
                       href={image}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className=" flex w-auto h-auto max-w-[50%] max-h-[50%] gap-4 p-11 "
+                      className=" flex w-auto h-auto max-w-[90%] max-h-[50%] gap-4 p-11 "
                     >
                       <img
                         src={image}
                         alt="Generated content"
-                        className=" transition-transform duration-900 ease-in-out hover:scale-110  rounded-lg cursor-pointer "
+                        className=" transition-transform duration-900 ease-in-out hover:scale-110  rounded-lg cursor-pointer w-[200px] "
                       />
                     </a>
                   ))}

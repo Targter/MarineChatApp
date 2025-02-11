@@ -61,12 +61,14 @@ const ChatInput = memo(() => {
     return null;
   }
 
-  const containerClasses = `w-full p-5 ${
-    chatStarted ? "flex items-end justify-center p-4" : "flex justify-center"
+  const containerClasses = ` p-5 ${
+    chatStarted
+      ? "flex items-end justify-center p-4 w-full"
+      : " w-[80%] flex justify-center"
   }`;
 
-  const inputBoxClasses = `flex space-x-2 bg-[#424242] bg-opacity-75 backdrop-blur-md p-6 rounded-2xl ${
-    chatStarted ? "w-[70%]" : "w-[35%]"
+  const inputBoxClasses = `flex space-x-2 bg-[#424242] flex-shrink-0 bg-opacity-75 backdrop-blur-md sm:p-4 p-3 rounded-2xl ${
+    chatStarted ? "w-[70%]" : "w-full"
   }`;
 
   const micButtonClasses = `p-2 rounded-full ${
