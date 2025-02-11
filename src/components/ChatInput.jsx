@@ -68,7 +68,7 @@ const ChatInput = memo(() => {
   }`;
 
   const inputBoxClasses = `flex space-x-2 bg-[#424242] flex-shrink-0 bg-opacity-75 backdrop-blur-md sm:p-4 p-3 rounded-2xl ${
-    chatStarted ? "w-[70%]" : "w-full"
+    chatStarted ? "w-[70%]" : "w-full sm:w-[70%]"
   }`;
 
   const micButtonClasses = `p-2 rounded-full ${
