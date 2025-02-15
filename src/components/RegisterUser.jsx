@@ -19,7 +19,7 @@ function RegisterUser() {
     if (otpSentTime) {
       const interval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - otpSentTime) / 1000); // Time in seconds
-        const timeLeft = Math.max(0, 30 - elapsed); // 30 seconds
+        const timeLeft = Math.max(0, 60 - elapsed); // 30 seconds
         setRemainingTime(timeLeft);
 
         if (timeLeft === 0) {
@@ -74,9 +74,10 @@ function RegisterUser() {
             setOtpVerified(true);
             toast.success(response.data.message, { autoClose: 1000 });
             if (response.data.user.emailVerified) {
-              navigate("/");
+              navigate("/Login");
             }
           } else {
+            navigate("/Register");
             toast.error(response.data.message, { autoClose: 1000 });
           }
         } catch (error) {
@@ -107,7 +108,7 @@ function RegisterUser() {
           setOtpSent(true);
           setOtpSentTime(Date.now());
           setOtp("");
-          setRemainingTime(30); // Reset the timer
+          setRemainingTime(60); // Reset the timer
           toast.success(response.data.message, { autoClose: 1000 });
         } else {
           toast.error(response.data.message, { autoClose: 1000 });
