@@ -169,7 +169,8 @@ export const useStore = create<State>((set, get) => ({
       });
      }
      else{
-      // console.log("premium user url")
+      console.log("premium user url")
+       console.log("message.content
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
