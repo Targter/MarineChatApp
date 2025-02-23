@@ -186,76 +186,30 @@ export const useStore = create<State>((set, get) => ({
         return;
       }
   
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-  
-      let assistantMessageId = crypto.randomUUID();
-      let assistantMessageContent = "";
-      let buffer = "";
-      let imageUrls = []; 
-  
-      // Initialize assistant message in chat
-      set((state) => {
-        const chats = [...state.chats];
-        const chat = chats.find((chat) => chat.id === chatId);
-        if (chat) {
-          chat.messages.push({
-            id: assistantMessageId,
-            content: "",
-            role: "assistant",
-            timestamp: Date.now(),
-            images:[],
-          });
-        }
-        return { chats };
-      });
-      // Read streaming response
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-  
-        buffer += decoder.decode(value);
-        const lines = buffer.split("\n");
-        buffer = lines.pop();
-  
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            const packet = JSON.parse(line);
-  
-            if (packet.type === "chunk") {
-              assistantMessageContent += packet.content;
-          
-            } else if (packet.type === "final") {
-              // Update history from response (if needed)
-              if (fetchImages && packet.images) {
-                const imageBaseUrl = import.meta.env.VITE_GET_IMAGE;
-                imageUrls = packet.images.map((path) => imageBaseUrl + path);
-              }
-            }
-          } catch (error) {
-            console.error("⚠️ Error parsing JSON:", error);
-          }
-        }
-      }
-  
-      set((state) => {
-        const chats = [...state.chats];
-        const chat = chats.find((chat) => chat.id === chatId);
-        if (chat) {
-          const assistantMessage = chat.messages.find((msg) => msg.id === assistantMessageId);
-          if (assistantMessage) {
-            assistantMessage.content = marked.parse(assistantMessageContent); // Parse markdown and update content
-            if (fetchImages && imageUrls.length> 0) {
-              assistantMessage.images = imageUrls; // Add images to message
-            }
-          }
+      const data = await response.json();
+      console.log("data:",data)
+// Extract text and images from the response
+    const assistantMessageContent = data.text; // Get the text content
+      const imageUrls = data.images || []; // Get the image URLs (default to an empty array if no images)
 
-        }
-        
-        // set({ isFetching: false });
-        return { chats ,isFetching:false};
-      });
+// Generate a unique ID for the assistant message
+let assistantMessageId = crypto.randomUUID();
+
+// Initialize assistant message in chat
+set((state) => {
+  const chats = [...state.chats];
+  const chat = chats.find((chat) => chat.id === chatId);
+  if (chat) {
+    chat.messages.push({
+      id: assistantMessageId,
+      content: marked.parse(assistantMessageContent), // Parse markdown and set content
+      role: "assistant",
+      timestamp: Date.now(),
+      images: imageUrls, // Add all image URLs to the message
+    });
+  }
+  return { chats, isFetching: false }
+})
   
       // Store message in database (if not trial/expired)
       if (subscriptionType !== "trial" && !isSubscriptionExpired) {
