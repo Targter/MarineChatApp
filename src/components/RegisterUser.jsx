@@ -14,12 +14,15 @@ function RegisterUser() {
   const [remainingTime, setRemainingTime] = useState(0);
   const navigate = useNavigate();
 
+  // OTP expiry time in seconds (2 minutes)
+  const OTP_EXPIRY_TIME = 120;
+
   // Handle OTP timer
   useEffect(() => {
     if (otpSentTime) {
       const interval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - otpSentTime) / 1000); // Time in seconds
-        const timeLeft = Math.max(0, 60 - elapsed); // 30 seconds
+        const timeLeft = Math.max(0, OTP_EXPIRY_TIME - elapsed); // 2 minutes
         setRemainingTime(timeLeft);
 
         if (timeLeft === 0) {
@@ -39,15 +42,17 @@ function RegisterUser() {
       if (name && email && password) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}Register`,
+            `${import.meta.env.VITE_BACKEND_URL}/Register`,
             { email }
           );
           if (response.status === 200) {
             setOtpSent(true);
             setOtpSentTime(Date.now());
-            toast.success(response.data.message, { autoClose: 1000 });
+            toast.success("OTP sent to your email.", { autoClose: 1000 });
           } else {
-            toast.error(response.data.message, { autoClose: 1000 });
+            toast.error("Failed to send OTP. Please try again.", {
+              autoClose: 1000,
+            });
           }
         } catch (error) {
           console.error("Error:", error);
@@ -67,18 +72,17 @@ function RegisterUser() {
       if (otp.length === 6) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}verifyOtp`,
+            `${import.meta.env.VITE_BACKEND_URL}/VerifyMail`,
             { email, otp, username: name, password }
           );
           if (response.status === 200) {
             setOtpVerified(true);
-            toast.success(response.data.message, { autoClose: 1000 });
-            if (response.data.user.emailVerified) {
-              navigate("/Login");
-            }
+            toast.success("OTP verified. Registration successful.", {
+              autoClose: 1000,
+            });
+            navigate("/Login"); // Redirect to login page after successful registration
           } else {
-            navigate("/Register");
-            toast.error(response.data.message, { autoClose: 1000 });
+            toast.error("Invalid OTP. Please try again.", { autoClose: 1000 });
           }
         } catch (error) {
           console.error("Error:", error);
@@ -101,23 +105,24 @@ function RegisterUser() {
     if (remainingTime === 0) {
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}Register`,
+          `${import.meta.env.VITE_BACKEND_URL}/Register`,
           { email }
         );
         if (response.status === 200) {
           setOtpSent(true);
           setOtpSentTime(Date.now());
           setOtp("");
-          setRemainingTime(60); // Reset the timer
-          toast.success(response.data.message, { autoClose: 1000 });
+          setRemainingTime(OTP_EXPIRY_TIME); // Reset the timer
+          toast.success("OTP resent to your email.", { autoClose: 1000 });
         } else {
-          toast.error(response.data.message, { autoClose: 1000 });
+          toast.error("Failed to resend OTP. Please try again.", {
+            autoClose: 1000,
+          });
         }
       } catch (error) {
         console.error("Error:", error);
         toast.error(
-          error.response?.data?.message ||
-            "An error occurred. Please try again.",
+          error.response?.data?.message || "An error occurred. Please try again.",
           {
             autoClose: 1000,
           }
@@ -199,40 +204,3 @@ function RegisterUser() {
                 onChange={(e) => setOtp(e.target.value)}
                 className="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
-              />
-            </div>
-          )}
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-          >
-            {otpSent ? "Verify OTP" : "Get OTP"}
-          </button>
-        </form>
-
-        {otpSent && remainingTime === 0 && (
-          <button
-            onClick={handleResendOtp}
-            className="w-full py-3 bg-gray-500 text-white font-semibold rounded-lg mt-4 hover:bg-gray-600 transition"
-          >
-            Resend OTP
-          </button>
-        )}
-        {remainingTime > 0 && (
-          <p className="text-center text-sm mt-2 text-gray-500">
-            Resend OTP in {remainingTime} seconds.
-          </p>
-        )}
-
-        <div className="flex justify-between mt-4">
-          <Link to="/Login" className="text-sm text-blue-500 hover:underline">
-            Login
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default RegisterUser;
