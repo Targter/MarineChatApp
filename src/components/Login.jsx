@@ -40,8 +40,8 @@ const Login = () => {
           // draggable: true,
         });
         const { AccessToken } = response.data;
+        navigate("/a"); // Redirect to home or dashboard
         localStorage.setItem("AccessToken", AccessToken);
-        navigate("/"); // Redirect to home or dashboard
       } else {
         toast.error("Login failed. Please check your credentials. ", {
           autoClose: 1000,
