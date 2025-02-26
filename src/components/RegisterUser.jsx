@@ -135,7 +135,7 @@ function RegisterUser() {
     }
   };
 
-  return (
+return (
     <div className="flex items-center justify-center min-h-screen bg-gray-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 text-black">
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
@@ -204,3 +204,40 @@ function RegisterUser() {
                 onChange={(e) => setOtp(e.target.value)}
                 className="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
+              />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+          >
+            {otpSent ? "Verify OTP" : "Get OTP"}
+          </button>
+        </form>
+
+        {otpSent && remainingTime === 0 && (
+          <button
+            onClick={handleResendOtp}
+            className="w-full py-3 bg-gray-500 text-white font-semibold rounded-lg mt-4 hover:bg-gray-600 transition"
+          >
+            Resend OTP
+          </button>
+        )}
+        {remainingTime > 0 && (
+          <p className="text-center text-sm mt-2 text-gray-500">
+            Resend OTP in {remainingTime} seconds.
+          </p>
+        )}
+
+        <div className="flex justify-between mt-4">
+          <Link to="/Login" className="text-sm text-blue-500 hover:underline">
+            Login
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default RegisterUser;
