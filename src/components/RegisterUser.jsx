@@ -42,7 +42,7 @@ function RegisterUser() {
       if (name && email && password) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/Register`,
+            `${import.meta.env.VITE_BACKEND_URL}Register`,
             { email }
           );
           if (response.status === 200) {
@@ -72,7 +72,7 @@ function RegisterUser() {
       if (otp.length === 6) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/VerifyMail`,
+            `${import.meta.env.VITE_BACKEND_URL}verifyOtp`,
             { email, otp, username: name, password }
           );
           if (response.status === 200) {
@@ -105,7 +105,7 @@ function RegisterUser() {
     if (remainingTime === 0) {
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/Register`,
+          `${import.meta.env.VITE_BACKEND_URL}Register`,
           { email }
         );
         if (response.status === 200) {
