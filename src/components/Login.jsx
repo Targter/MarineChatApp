@@ -36,8 +36,9 @@ const Login = () => {
           autoClose: 2000,
           hideProgressBar: false,
         });
-        const { AccessToken } = response.data;
-        navigate("/"); // Redirect to home or dashboard
+        // const { AccessToken } = response.data;
+        setTimeout(() => window.location.href = "/", 100);
+        // navigate("/"); // Redirect to home or dashboard
         localStorage.setItem("AccessToken", AccessToken);
       } else {
         toast.error("Login failed. Please check your credentials. ", {
