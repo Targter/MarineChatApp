@@ -43,7 +43,7 @@ const withAuthCheck = (WrappedComponent: React.ComponentType) => {
       checkAuth();
       const retryTimeout = setTimeout(checkAuth, 1000);
       return () => clearTimeout(retryTimeout);
-    }, [navigate, setUserData]);
+    }, [navigate]);
 
     if (isLoading || isAuthenticated === null) {
       return <div>Loading...</div>; // Show a loading spinner
