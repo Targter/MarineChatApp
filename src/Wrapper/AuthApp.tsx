@@ -6,6 +6,7 @@ const withAuthCheck = (WrappedComponent: React.ComponentType) => {
   return (props: any) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
      const setUserData = useUserStore((state) => state.setUserData);
+     const [isLoading, setIsLoading] = useState(true);
     const {subscriptionEndDate} = useUserStore()
     const navigate = useNavigate();
 
@@ -34,13 +35,22 @@ const withAuthCheck = (WrappedComponent: React.ComponentType) => {
           setIsAuthenticated(false);
           navigate('/Login');
         }
+        finally {
+          setIsLoading(false);
+        }
       };
 
       checkAuth();
-    }, [navigate]);
+      const retryTimeout = setTimeout(checkAuth, 1000);
+      return () => clearTimeout(retryTimeout);
+    }, [navigate, setUserData]);
 
-    if (isAuthenticated === null) {
-      return <div>Loading...</div>;  // Or a loading spinner
+    if (isLoading || isAuthenticated === null) {
+      return <div>Loading...</div>; // Show a loading spinner
+    }
+
+    if (!isAuthenticated) {
+      return null; // Redirect will happen in the useEffect
     }
 
     return <WrappedComponent {...props} />;

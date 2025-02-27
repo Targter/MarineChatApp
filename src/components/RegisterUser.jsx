@@ -122,7 +122,8 @@ function RegisterUser() {
       } catch (error) {
         console.error("Error:", error);
         toast.error(
-          error.response?.data?.message || "An error occurred. Please try again.",
+          error.response?.data?.message ||
+            "An error occurred. Please try again.",
           {
             autoClose: 1000,
           }
@@ -135,7 +136,7 @@ function RegisterUser() {
     }
   };
 
-return (
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gray-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 text-black">
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
