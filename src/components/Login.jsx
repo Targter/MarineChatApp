@@ -37,7 +37,7 @@ const Login = () => {
           hideProgressBar: false,
         });
         // const { AccessToken } = response.data;
-        setTimeout(() => window.location.href = "/", 100);
+        setTimeout(() => navigate("/"), 100);
         // navigate("/"); // Redirect to home or dashboard
         localStorage.setItem("AccessToken", AccessToken);
       } else {
