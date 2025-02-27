@@ -36,7 +36,7 @@ const Login = () => {
           autoClose: 2000,
           hideProgressBar: false,
         });
-        // const { AccessToken } = response.data;
+        const { AccessToken } = response.data;
         setTimeout(() => navigate("/"), 100);
         // navigate("/"); // Redirect to home or dashboard
         localStorage.setItem("AccessToken", AccessToken);
