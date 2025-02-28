@@ -13,7 +13,7 @@ const withAuthCheck = (WrappedComponent: React.ComponentType) => {
     useEffect(() => {
       const checkAuth = async () => {
         try {
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}userAuth`, { withCredentials: true });
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}userAuth`, { withCredentials: true });
           // console.log("authresposne",response)
           if (!response.data.authenticated) {
             navigate('/Login');
