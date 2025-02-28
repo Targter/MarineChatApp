@@ -2,17 +2,23 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useUserStore } from "../store/useStore";
+// import { useUserStore } from "../store/useStore";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { subscriptionEndDate } = useUserStore();
+  const setUserData = useUserStore((state) => state.setUserData);
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       // alert("Please enter both email and password.");
-      toast.error("Please enter both email and passord",{autoClose: 1000,
-        hideProgressBar: false,})
-      
+      toast.error("Please enter both email and passord", {
+        autoClose: 1000,
+        hideProgressBar: false,
+      });
+
       return;
     }
 
@@ -32,6 +38,9 @@ const Login = () => {
       if (response.status === 200) {
         // Redirect to home or dashboard after successful login
         // alert("Login Successful!");
+
+        const userData = response.data.user;
+        console.log(userData);
         toast.success("login Successful", {
           autoClose: 2000,
           hideProgressBar: false,
@@ -39,8 +48,17 @@ const Login = () => {
           // pauseOnHover: true,
           // draggable: true,
         });
-        const { AccessToken } = response.data;
-        localStorage.setItem("AccessToken", AccessToken);
+        // const { AccessToken } = response.data;
+        // localStorage.setItem("AccessToken", AccessToken);
+        setUserData({
+          userId: userData._id,
+          username: userData.username,
+          email: userData.email,
+          subscriptionType: userData.subscriptionType,
+          subscriptionEndDate: userData.subscriptionEndDate
+            ? new Date(userData.subscriptionEndDate)
+            : null,
+        });
         navigate("/"); // Redirect to home or dashboard
       } else {
         toast.error("Login failed. Please check your credentials. ", {
@@ -52,10 +70,10 @@ const Login = () => {
     } catch (error) {
       console.error("Error:", error);
       // alert("An error occurred. Please try again.");
-      toast("Invalid username or password",{
-
+      toast("Invalid username or password", {
         autoClose: 1000,
-        hideProgressBar: false,});
+        hideProgressBar: false,
+      });
     }
   };
 

@@ -28,5 +28,4 @@ const Pagecon = () => {
   );
 };
 
-// export default withAuthCheck(Pagecon);
-export default Pagecon; 
+export default withAuthCheck(Pagecon);
