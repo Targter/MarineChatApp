@@ -3,6 +3,7 @@ import { Bot,  User,Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSidebarStore, useUserStore ,useStore} from '../store/useStore';
 import axios from "axios";
+import { UserButton } from '@clerk/clerk-react';
 // import { toast } from "react-toastify";
 
 export function Navbar() {
@@ -16,26 +17,26 @@ const user = useUserStore((state)=>({
   
 
 }))
-const LogoutCall = async()=>{
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}logout`,
+// const LogoutCall = async()=>{
+//   try {
+//     const response = await axios.get(
+//       `${import.meta.env.VITE_BACKEND_URL}logout`,
      
-      { withCredentials: true }
-    );
+//       { withCredentials: true }
+//     );
 
-    if (response.status === 200) {
-      useUserStore.getState().clearUserData(); // ✅ Clear user data
-    useStore.getState().clearStore(); // ✅ Clear chat history
-  // Redirect user to login page
-  window.location.href = "/login";useUserStore.getState().clearUserData(); 
-    } else {
-      console.error("Logout failed:", response.data);
-    }
-  } catch (error) {
-    console.error("Error during logout:", error);
-  }
-}
+//     if (response.status === 200) {
+//       useUserStore.getState().clearUserData(); // ✅ Clear user data
+//     useStore.getState().clearStore(); // ✅ Clear chat history
+//   // Redirect user to login page
+//   window.location.href = "/login";useUserStore.getState().clearUserData(); 
+//     } else {
+//       console.error("Logout failed:", response.data);
+//     }
+//   } catch (error) {
+//     console.error("Error during logout:", error);
+//   }
+// }
 const formattedEndDate = user.subscriptionEndDate
 ? new Date(user.subscriptionEndDate).toLocaleDateString()
 : "N/A";
@@ -68,11 +69,9 @@ const formattedEndDate = user.subscriptionEndDate
             </div>
 
             {/* User Info */}
-            <div className="md:flex items-center hidden ">
-              <User className="h-6 w-6 text-gray-400 hover:text-gray-200" />
-              <span className="ml-2 text-gray-400 hover:text-gray-200">{user.username}</span>
-            </div>
-            <button className='bg-red-600 p-2  ml-2 rounded-md md:pl-4 md:pr-4 md:ml-4 hover:bg-red-800 md:text-xl text-xs'><Link to="/Register" onClick={LogoutCall}>Logout</Link></button>
+           
+            {/* <button className='bg-red-600 p-2  ml-2 rounded-md md:pl-4 md:pr-4 md:ml-4 hover:bg-red-800 md:text-xl text-xs'><Link to="/Register" onClick={LogoutCall}>Logout</Link></button> */}
+            <UserButton />
           </div>
         </div>
       </div>

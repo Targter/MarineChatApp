@@ -1,23 +1,72 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ChatWindow } from "../components/ChatWindow";
 import { Sidebar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
-import { useSidebarStore } from "../store/useStore";
+import { useSidebarStore, useUserStore } from "../store/useStore";
 import UpgradeToPremium from "../components/UpgradeToPremium";
-// import axios from 'axios';
-import withAuthCheck from "../Wrapper/AuthApp";
-// import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useAuth, useUser } from "@clerk/clerk-react"; // Update imports
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const MemoizedNavbar = memo(Navbar);
 const MemoizedSidebar = memo(Sidebar);
 const MemoizedChatWindow = memo(ChatWindow);
 
-//
 const Pagecon = () => {
-  // const useNavigatee = useNavigate()
+  const navigate = useNavigate();
   const { isSidebarOpen } = useSidebarStore();
+  const { isSignedIn, user } = useUser();
+  const { getToken } = useAuth();
+  const setUserData = useUserStore((state) => state.setUserData);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUserData = async () => {
+    try {
+      console.log("called");
+      const token = await getToken();
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}userAuth`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.authenticated) {
+        setUserData({
+          userId: user.id,
+          username: `${user.firstName} ${user.lastName}`,
+          email: user.primaryEmailAddress.emailAddress,
+          subscriptionType: response.data.user.subscriptionType,
+          subscriptionEndDate: response.data.user.subscriptionEndDate
+            ? new Date(response.data.user.subscriptionEndDate)
+            : null,
+        });
+      } else {
+        // Handle failed backend authentication
+        console.error("Backend authentication failed");
+      }
+    } catch (error) {
+      toast.error("Logged in After sometimes ");
+      console.error("Error fetching user data:", error);
+      // navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (!isSignedIn) return; // Prevent unnecessary navigation
+    fetchUserData();
+  }, [isSignedIn]); // Removed navigate
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-[#212121] text-white flex md:justify-center justify-end overflow-hidden">
-      {/* <Navbar toggleSidebar={toggleSidebar} /> */}
       <MemoizedNavbar />
       <div className="pt-16 flex w-full overflow-x-hidden">
         {isSidebarOpen && <MemoizedSidebar className="w-2/4 min-w-[500px]" />}
@@ -28,5 +77,4 @@ const Pagecon = () => {
   );
 };
 
-// export default withAuthCheck(Pagecon);
 export default Pagecon;

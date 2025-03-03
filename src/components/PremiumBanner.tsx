@@ -23,14 +23,15 @@ console.log("userId:",userId,subscriptionType)
   const handleUpgrade = async (e,plan) => {
     e.preventDefault();
     try {
+      console.log(e,plan)
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}sub/renewsubscription`,
         { userId: userId, subscriptionType: plan },
         { withCredentials: true }
       );
 
-      toast.success(`Subscription updated to ${plan}`,{autoClose: 2000,
-        })
+      toast.success(`Subscription updated to ${plan}`,{autoClose: 2000})
+      navigate("/")
       
     } catch (error) {
       console.error('Error updating subscription:', error);
@@ -68,20 +69,11 @@ console.log("userId:",userId,subscriptionType)
       price: '$9.99/month',
       planType: 'premium',
     },
-    {
-      id: 3,
-      title: 'Premium (Yearly)',
-      description: 'Save $20 annually with a yearly subscription.',
-      price: '$99/year',
-      planType: 'premium-yearly',
-    },
+   
   ];
 
   return (
-     <>
-    
- 
-    <div className="relative">
+     <> <div className="relative">
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-200">
       <h3 className='fixed top-5 right-10 bg-gray-400 p-3 rounded-md hover:bg-gray-800 hover:text-white'><Link to="/"> Back</Link> </h3>
         <h3 className="text-xl font-semibold mb-4">Choose a Plan</h3>
