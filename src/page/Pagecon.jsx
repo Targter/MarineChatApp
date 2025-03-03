@@ -5,7 +5,7 @@ import { Navbar } from "../components/Navbar";
 import { useSidebarStore, useUserStore } from "../store/useStore";
 import UpgradeToPremium from "../components/UpgradeToPremium";
 import axios from "axios";
-import { useAuth, useUser } from "@clerk/clerk-react"; // Update imports
+import { SignedIn, useAuth, useUser } from "@clerk/clerk-react"; // Update imports
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -25,16 +25,24 @@ const Pagecon = () => {
     try {
       console.log("called");
       const token = await getToken();
-      console.log("token",token)
-      console.log(import.meta.env.VITE_BACKEND_URL)
+      console.log(token);
+      console.log(isSignedIn);
+      // if (!token) {
+      //   console.error("No authentication token found.");
+      //   toast.error("Authentication failed. Please log in again.");
+      //   navigate("/login");
+      //   return;
+      // }
+
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}userAuth`,
+        `${import.meta.env.VITE_BACKEND_URL}/userAuth`,
+        {}, // ✅ Empty object for post data
         {
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
-      console.log("res:",response);
-
+      console.log("response:", response);
       if (response.data.authenticated) {
         setUserData({
           userId: user.id,
