@@ -25,7 +25,7 @@ console.log("userId:",userId,subscriptionType)
     try {
       console.log(e,plan)
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}sub/renewsubscription`,
+        `${import.meta.env.VITE_BACKEND_URL}/sub/renewsubscription`,
         { userId: userId, subscriptionType: plan },
         { withCredentials: true }
       );
