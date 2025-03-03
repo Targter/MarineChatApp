@@ -221,7 +221,7 @@ set((state) => {
         ];
   
         await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}api/updateData`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
           { userId, chatId, messages: messagesToSend },
           { withCredentials: true }
         );
@@ -257,7 +257,7 @@ set((state) => {
         return;
       }
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}api/chatHistory/${chatId}`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/chatHistory/${chatId}`, {
         params: { userId},
         withCredentials:true // Replace with the actual user ID
       });
@@ -308,7 +308,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
         return;
       }
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}api/titles`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/titles`, {
         params: { userId }, 
         withCredentials:true,// Replace with the actual user ID
       });
@@ -389,7 +389,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
     }
     // console.log("delete button called ")
     try {
-      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}api/deleteChat`, {
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/deleteChat`, {
         data: {
           userId, // Replace with actual user ID
           chatId:id,
