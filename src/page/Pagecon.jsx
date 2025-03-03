@@ -27,9 +27,7 @@ const Pagecon = () => {
       const token = await getToken();
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}userAuth`,
-        {},
         {
-          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
