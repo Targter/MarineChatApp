@@ -33,6 +33,7 @@ const Pagecon = () => {
           withCredentials: true,
         }
       );
+      console.log("res:",response);
 
       if (response.data.authenticated) {
         setUserData({
