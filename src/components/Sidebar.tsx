@@ -16,7 +16,7 @@ import axios from 'axios';
         const userId = useUserStore.getState().userId;
         updateChatTitle(chatId, newTitle.trim());
          try {
-              const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}api/updateChatTitle`, 
+              const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/updateChatTitle`, 
                { userId: userId, // You can replace this with actual user ID
                 chatId,
                 newTitle,},{
