@@ -362,8 +362,8 @@ export const useStore = create<State>((set, get) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: message.content,
-          history: history,
-          top_k: 3,
+          // history: history,
+          // top_k: 3,
         }),
       });
   
