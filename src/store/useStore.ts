@@ -499,6 +499,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
         params: { userId }, 
         withCredentials:true,// Replace with the actual user ID
       });
+      console.log("response:title",response.data);
       // const reversedTitles = response.data.titles.reverse();
       const reversedTitles = response.data.titles;
 
