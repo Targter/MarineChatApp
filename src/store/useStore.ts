@@ -408,7 +408,7 @@ set((state) => {
         ];
   
         await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}api/updateData`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
           { userId, chatId, messages: messagesToSend },
           { withCredentials: true }
         );
