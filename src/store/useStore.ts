@@ -277,7 +277,7 @@ export const useStore = create<State>((set, get) => ({
     const chats = useStore.getState().chats;
   const chat = chats.find((chat) => chat.id === chatId);
   const history = chat
-    ? chat.messages.slice(-4).map((msg) => ({
+    ? chat.messages.slice(-2).map((msg) => ({
         role: msg.role === "user" ? "user" : "assistant",
         parts: [msg.content],
       }))
@@ -288,7 +288,7 @@ export const useStore = create<State>((set, get) => ({
       const newChats = [...state.chats];
     
       if (chatIndex === -1) {
-        newChats.push({ id: chatId, title: "New Chat", messages: [] });
+        newChats.push({ id: chatId, title: "HEHE", messages: [] });
       }
     
       const chat = newChats.find((chat) => chat.id === chatId);
@@ -298,6 +298,8 @@ export const useStore = create<State>((set, get) => ({
         role: "user", 
         timestamp: Date.now() 
       }];
+
+      
     
       return { chats: newChats };
     });
@@ -310,7 +312,7 @@ export const useStore = create<State>((set, get) => ({
       //     headers: { "Content-Type": "application/json" },
       //   }
       // );
-
+          console.log("trial:",message.content)
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -319,14 +321,7 @@ export const useStore = create<State>((set, get) => ({
         }),
       });
       console.log("trial user called: ",response) ;
-// trial user url 
-      // https://flask-api-three-mu.vercel.app/stream/ 
-      // console.log("response:",response)
-      // if (response.status !== 200) {
-      //   set({ isFetching: false });
-      //   console.error("API request failed:", response.status, response.statusText);
-      //   return;
-      // }
+
       if (!response.ok) {
         set({ isFetching: false });
         console.error("API request failed:", response.status, response.statusText);
@@ -356,14 +351,14 @@ export const useStore = create<State>((set, get) => ({
       });
      }
      else{
-      // console.log("premium user url")
+      console.log("premium user url",message.content)
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: message.content,
-          // history: history,
-          // top_k: 3,
+          history: history,
+          top_k: 3,
         }),
       });
   
@@ -510,13 +505,9 @@ export const useSidebarStore = create<SidebarState>((set) => ({
     }
   },
   addChat: async () => {
-    // const newChatId = crypto.randomUUID(); 
-    // console.log("title add3ed")
     const { subscriptionType ,subscriptionEndDate } = useUserStore.getState();
   const { titles } = useSidebarStore.getState(); // Get the current chat titles
-
   const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
-  
   // Trial users can only have one chat
   if (subscriptionType === "trial" && titles.length >= 1) {
     // console.log("Trial users can only have one chat.");
@@ -539,14 +530,12 @@ export const useSidebarStore = create<SidebarState>((set) => ({
     
     // Update the local state immediately
     set((state) => ({
-      titles: [...state.titles, newChat]
+      titles: [newChat,...state.titles ]
     }));
 
      // Sync with the chats store
-     useStore.getState().createChat(newChatId, newChat.title);
-
+    useStore.getState().createChat(newChatId, newChat.title);
     useStore.getState().setCurrentChat(newChatId);
-
     return newChatId;
   },
 
@@ -605,9 +594,6 @@ export const useSidebarStore = create<SidebarState>((set) => ({
         chat.id === id ? { ...chat, title } : chat
       ),
     }));
-
-
-    
   }
 
 }));
