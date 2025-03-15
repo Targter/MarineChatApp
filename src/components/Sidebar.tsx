@@ -10,13 +10,15 @@ import axios from 'axios';
     console.log("sidebar calling")
     const {titles,addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
     const {currentChat,setCurrentChat,fetchChatHistory} = useStore();
+    console.log("currentChat:",currentChat)
     const handleEditTitle =async (chatId: string, currentTitle: string) => {
       const newTitle = prompt('Enter new chat title:', currentTitle);
+      // console.log("newtitle",newTitle)
       if (newTitle && newTitle.trim()) {
         const userId = useUserStore.getState().userId;
         updateChatTitle(chatId, newTitle.trim());
          try {
-              const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}api/updateChatTitle`, 
+              const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/updateChatTitle`, 
                { userId: userId, // You can replace this with actual user ID
                 chatId,
                 newTitle,},{
