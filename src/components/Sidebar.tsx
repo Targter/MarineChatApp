@@ -14,6 +14,8 @@ import axios from 'axios';
     const handleEditTitle =async (chatId: string, currentTitle: string) => {
       const newTitle = prompt('Enter new chat title:', currentTitle);
       // console.log("newtitle",newTitle)
+      console.log("fcu",currentChat);
+      console.log("title",titles);
       if (newTitle && newTitle.trim()) {
         const userId = useUserStore.getState().userId;
         updateChatTitle(chatId, newTitle.trim());
