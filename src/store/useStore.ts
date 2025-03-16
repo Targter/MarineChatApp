@@ -496,10 +496,10 @@ export const useSidebarStore = create<SidebarState>((set) => ({
       });
       console.log("response:title",response.data);
       // const reversedTitles = response.data.titles.reverse();
-      const reversedTitles = response.data.titles;
+      // const reversedTitles = response.data.titles;
 
       // Update the state with the reversed titles
-      set({ titles: reversedTitles });
+      set({ titles: response.data.titles });
     } catch (error) {
       console.error('Error fetching chat titles:', error);
     }
