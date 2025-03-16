@@ -68,7 +68,7 @@ useEffect(() => {
               <div></div>
               <div className="p-1 flex flex-col h-[88%] justify-between">
           <div className="space-y-2 flex justify-center flex-col items-center ">
-            {titles?.map((chat) => (
+            {titles.map((chat) => (
               <div
                 key={chat.id}
                 className={`flex items-center justify-between p-2 rounded-lg cursor-pointer
