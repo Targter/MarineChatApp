@@ -1,23 +1,25 @@
-
 import React from 'react';
   import { Edit2, Trash2, MessageSquare, Plus } from 'lucide-react';
   import { useSidebarStore,useStore, useUserStore } from '../store/useStore';
   // import { PremiumBanner } from './PremiumBanner';
   import { Link } from 'react-router-dom';
   import { Crown } from 'lucide-react';
+  
+import { useAuth } from "@clerk/clerk-react"; // Update imports
+
 import { useEffect } from 'react';
 import axios from 'axios';
   export function Sidebar() {
+    const { getToken } = useAuth();
     console.log("sidebar calling")
-    const { titles,addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
+    const {titles,addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
     const {currentChat,setCurrentChat,fetchChatHistory} = useStore();
+    // console.log('fetchtitela;lkdsjf',fetchTitles)
+    console.log("titles:",titles)
     console.log("currentChat:",currentChat)
-    console.log("titles",titles);
     const handleEditTitle =async (chatId: string, currentTitle: string) => {
       const newTitle = prompt('Enter new chat title:', currentTitle);
       // console.log("newtitle",newTitle)
-      console.log("fcu",currentChat);
-      console.log("title",titles);
       if (newTitle && newTitle.trim()) {
         const userId = useUserStore.getState().userId;
         updateChatTitle(chatId, newTitle.trim());
@@ -41,8 +43,12 @@ import axios from 'axios';
 // fetcing the titles
 useEffect(() => {
   const fetchData = async () => {
+    
+    // console.log(token)
     try {
-      await fetchTitles();
+      const token:any = await getToken();
+      // console.log(token);
+      await fetchTitles(token);
     } catch (error) {
       console.error('Error fetching chat titles:', error);
     }
@@ -68,7 +74,7 @@ useEffect(() => {
               <div></div>
               <div className="p-1 flex flex-col h-[88%] justify-between">
           <div className="space-y-2 flex justify-center flex-col items-center ">
-            {titles.map((chat) => (
+            {titles?.map((chat) => (
               <div
                 key={chat.id}
                 className={`flex items-center justify-between p-2 rounded-lg cursor-pointer

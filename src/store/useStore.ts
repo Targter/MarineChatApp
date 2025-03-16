@@ -76,70 +76,203 @@ export const useStore = create<State>((set, get) => ({
 
   setCurrentChat: (id) => set({ currentChat: id }),
 
-    addMessage: async (chatId, message) => {
-    const { subscriptionEndDate, subscriptionType, userId } = useUserStore.getState();
-    const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
-    console.log("calledAddMessage")
-    const isTrialUser = subscriptionType === "trial";
-    const isPremium = subscriptionType === "premium" || subscriptionType === "7-day-premium";
-    const fetchImages = isPremium && !isSubscriptionExpired; // Fetch images only for premium users
+//   addMessage: async (chatId, message) => {
+//     const { subscriptionEndDate, subscriptionType, userId } = useUserStore.getState();
+//     const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
+//     console.log("calledAddMessage")
+//     const isTrialUser = subscriptionType === "trial";
+//     const isPremium = subscriptionType === "premium" || subscriptionType === "7-day-premium";
+//     const fetchImages = isPremium && !isSubscriptionExpired; // Fetch images only for premium users
   
   
-    if ( isSubscriptionExpired) {
-      toast.warn("Trial users cannot store chats. Please upgrade your subscription.", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-    return 
-    }
+//     if ( isSubscriptionExpired) {
+//       toast.warn("Trial users cannot store chats. Please upgrade your subscription.", {
+//         position: "bottom-right",
+//         autoClose: 2000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//       });
+//     return 
+//     }
 
-    const apiUrl =
-    subscriptionType === "trial"
-      ? import.meta.env.VITE_TRIAL_URL
-      : import.meta.env.VITE_PREMIUM_URL;
+//     const apiUrl =
+//     subscriptionType === "trial"
+//       ? import.meta.env.VITE_TRIAL_URL
+//       : import.meta.env.VITE_PREMIUM_URL;
 
-  //     set({ isFetching: true });
+//       set({ isFetching: true });
 
-  //   set((state) => ({ isTyping: !state.isTyping }));
+//     set((state) => ({ isTyping: !state.isTyping }));
   
-  //   // Add user message to chat
-  //   const chats = useStore.getState().chats;
-  // const chat = chats.find((chat) => chat.id === chatId);
-  // const history = chat
-  //   ? chat.messages.slice(-2).map((msg) => ({
-  //       role: msg.role === "user" ? "user" : "assistant",
-  //       parts: [msg.content],
-  //     }))
-  //   : [];
+//     // Add user message to chat
+//     const chats = useStore.getState().chats;
+//   const chat = chats.find((chat) => chat.id === chatId);
+//   const history = chat
+//     ? chat.messages.slice(-4).map((msg) => ({
+//         role: msg.role === "user" ? "user" : "assistant",
+//         parts: [msg.content],
+//       }))
+//     : [];
 
-  //   set((state) => {
-  //     const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
-  //     const newChats = [...state.chats];
+//     set((state) => {
+//       const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
+//       const newChats = [...state.chats];
     
-  //     if (chatIndex === -1) {
-  //       newChats.push({ id: chatId, title: "HEHE", messages: [] });
-  //     }
+//       if (chatIndex === -1) {
+//         newChats.push({ id: chatId, title: "New Chat", messages: [] });
+//       }
     
-  //     const chat = newChats.find((chat) => chat.id === chatId);
-  //     chat.messages = [...chat.messages, { 
-  //       id: crypto.randomUUID(), 
-  //       content: message.content, 
-  //       role: "user", 
-  //       timestamp: Date.now() 
-  //     }];
-
+//       const chat = newChats.find((chat) => chat.id === chatId);
+//       chat.messages = [...chat.messages, { 
+//         id: crypto.randomUUID(), 
+//         content: message.content, 
+//         role: "user", 
+//         timestamp: Date.now() 
+//       }];
+    
+//       return { chats: newChats };
+//     });
+//     try {
+//       if((subscriptionType === "trial")){
       
-    
-  //     return { chats: newChats };
-  //   });
+//       const response = await axios.get(
+//         `${apiUrl}${message.content}`,
+//         {
+//           headers: { "Content-Type": "application/json" },
+//         }
+//       );
+//       console.log("response:",response)
+//       if (response.status !== 200) {
+//         set({ isFetching: false });
+//         console.error("API request failed:", response.status, response.statusText);
+//         return;
+//       }
 
+//       const assistantMessageContent = response.data; // Set AI response
+//       let assistantMessageId = crypto.randomUUID();
+
+//       // Add assistant message to chat
+//       set((state) => {
+//         const chats = [...state.chats];
+//         const chat = chats.find((chat) => chat.id === chatId);
+//         if (chat) {
+//           chat.messages.push({
+//             id: assistantMessageId,
+//             content: assistantMessageContent,
+//             role: "assistant",
+//             timestamp: Date.now(),
+//           });
+//         }
+//         return { chats };
+//       });
+//      }
+//      else{
+//       // console.log("premium user url")
+//       const response = await fetch(apiUrl, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           query: message.content,
+//           history: history,
+//           top_k: 3,
+//         }),
+//       });
+  
+//       if (!response.ok) {
+//         set({ isFetching: false });
+//         console.error("API request failed:", response.status, response.statusText);
+//         return;
+//       }
+  
+//       const data = await response.json();
+//       console.log("data:",data)
+// // Extract text and images from the response
+//     const assistantMessageContent = data.text; // Get the text content
+//       const imageUrls = data.images || []; // Get the image URLs (default to an empty array if no images)
+
+// // Generate a unique ID for the assistant message
+// let assistantMessageId = crypto.randomUUID();
+
+// // Initialize assistant message in chat
+// set((state) => {
+//   const chats = [...state.chats];
+//   const chat = chats.find((chat) => chat.id === chatId);
+//   if (chat) {
+//     chat.messages.push({
+//       id: assistantMessageId,
+//       content: marked.parse(assistantMessageContent), // Parse markdown and set content
+//       role: "assistant",
+//       timestamp: Date.now(),
+//       images: imageUrls, // Add all image URLs to the message
+//     });
+//   }
+//   return { chats, isFetching: false }
+// })
+  
+//       // Store message in database (if not trial/expired)
+//       if (subscriptionType !== "trial" && !isSubscriptionExpired) {
+//         const messagesToSend = [
+//           { role: "user", content: message.content },
+//           { role: "assistant",  content: assistantMessageContent, 
+//             ...(imageUrls.length > 0 && { images: imageUrls }) // Only include images if not empty
+//           },
+//         ];
+  
+//         await axios.post(
+//           `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
+//           { userId, chatId, messages: messagesToSend },
+//           { withCredentials: true }
+//         );
+//       }
+//      }
+//     } catch (error) {
+//       console.error("🚨 Error:", error);
+//       toast.error("Failed to send message. Please try again.", {
+//         position: "bottom-right",
+//         autoClose: 2000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//       });
+//       set({ isFetching: false });
+//     }finally{
+//       set({isFetching:false})
+//     }
+//   },
+
+addMessage: async (chatId, message) => {
+  const { subscriptionEndDate, subscriptionType, userId } = useUserStore.getState();
+  const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
+  console.log("calledAddMessage")
+  const isTrialUser = subscriptionType === "trial";
+  const isPremium = subscriptionType === "premium" || subscriptionType === "7-day-premium";
+  const fetchImages = isPremium && !isSubscriptionExpired; // Fetch images only for premium users
+
+
+  if ( isSubscriptionExpired) {
+    toast.warn("Trial users cannot store chats. Please upgrade your subscription.", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  return 
+  }
+
+  const apiUrl =
+  subscriptionType === "trial"
+    ? import.meta.env.VITE_TRIAL_URL
+    : import.meta.env.VITE_PREMIUM_URL;
+
+    set({ isFetching: true });
 
   set((state) => ({ isTyping: !state.isTyping }));
- 
+
   // Add user message to chat
   const chats = useStore.getState().chats;
 const chat = chats.find((chat) => chat.id === chatId);
@@ -168,127 +301,134 @@ const history = chat
 
     return { chats: newChats };
   });
-    try {
-      if((subscriptionType === "trial")){
-      
-      // const response = await axios.get(
-      //   `${apiUrl}${message.content}`,
-      //   {
-      //     headers: { "Content-Type": "application/json" },
-      //   }
-      // );
-          console.log("trial:",message.content)
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: message.content,
-        }),
-      });
-      console.log("trial user called: ",response) ;
+  try {
+    if((subscriptionType === "trial")){
 
-      if (!response.ok) {
-        set({ isFetching: false });
-        console.error("API request failed:", response.status, response.statusText);
-        return;
-      }
-  
-      const data = await response.json();
-      console.log("data:",data)
-// Extract text and images from the response
-    const assistantMessageContent = data.text; 
-      // const assistantMessageContent = response.data; // Set AI response
-      let assistantMessageId = crypto.randomUUID();
+    // const response = await axios.get(
+    //   `${apiUrl}${message.content}`,
+    //   {
+    //     headers: { "Content-Type": "application/json" },
+    //   }
+    // );
 
-      // Add assistant message to chat
-      set((state) => {
-        const chats = [...state.chats];
-        const chat = chats.find((chat) => chat.id === chatId);
-        if (chat) {
-          chat.messages.push({
-            id: assistantMessageId,
-            content: assistantMessageContent,
-            role: "assistant",
-            timestamp: Date.now(),
-          });
-        }
-        return { chats };
-      });
-     }
-     else{
-      console.log("premium user url",message.content)
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: message.content,
-          history: history,
-          top_k: 3,
-        }),
-      });
-  
-      if (!response.ok) {
-        set({ isFetching: false });
-        console.error("API request failed:", response.status, response.statusText);
-        return;
-      }
-  
-      const data = await response.json();
-      console.log("data:",data)
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: message.content,
+      }),
+    });
+    console.log("trial user called: ",response) ;
+// trial user url 
+    // https://flask-api-three-mu.vercel.app/stream/ 
+    // console.log("response:",response)
+    // if (response.status !== 200) {
+    //   set({ isFetching: false });
+    //   console.error("API request failed:", response.status, response.statusText);
+    //   return;
+    // }
+    if (!response.ok) {
+      set({ isFetching: false });
+      console.error("API request failed:", response.status, response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    console.log("data:",data)
 // Extract text and images from the response
-    const assistantMessageContent = data.text; // Get the text content
-      const imageUrls = data.images || []; // Get the image URLs (default to an empty array if no images)
+  const assistantMessageContent = data.text; 
+    // const assistantMessageContent = response.data; // Set AI response
+    let assistantMessageId = crypto.randomUUID();
+
+    // Add assistant message to chat
+    set((state) => {
+      const chats = [...state.chats];
+      const chat = chats.find((chat) => chat.id === chatId);
+      if (chat) {
+        chat.messages.push({
+          id: assistantMessageId,
+          content: assistantMessageContent,
+          role: "assistant",
+          timestamp: Date.now(),
+        });
+      }
+      return { chats };
+    });
+   }
+   else{
+    // console.log("premium user url")
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: message.content,
+        // history: history,
+        // top_k: 3,
+      }),
+    });
+
+    if (!response.ok) {
+      set({ isFetching: false });
+      console.error("API request failed:", response.status, response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    console.log("data:",data)
+// Extract text and images from the response
+  const assistantMessageContent = data.text; // Get the text content
+    const imageUrls = data.images || []; // Get the image URLs (default to an empty array if no images)
 
 // Generate a unique ID for the assistant message
 let assistantMessageId = crypto.randomUUID();
 
 // Initialize assistant message in chat
 set((state) => {
-  const chats = [...state.chats];
-  const chat = chats.find((chat) => chat.id === chatId);
-  if (chat) {
-    chat.messages.push({
-      id: assistantMessageId,
-      content: marked.parse(assistantMessageContent), // Parse markdown and set content
-      role: "assistant",
-      timestamp: Date.now(),
-      images: imageUrls, // Add all image URLs to the message
-    });
-  }
-  return { chats, isFetching: false }
+const chats = [...state.chats];
+const chat = chats.find((chat) => chat.id === chatId);
+if (chat) {
+  chat.messages.push({
+    id: assistantMessageId,
+    content: marked.parse(assistantMessageContent), // Parse markdown and set content
+    role: "assistant",
+    timestamp: Date.now(),
+    images: imageUrls, // Add all image URLs to the message
+  });
+}
+return { chats, isFetching: false }
 })
-  
-      // Store message in database (if not trial/expired)
-      if (subscriptionType !== "trial" && !isSubscriptionExpired) {
-        const messagesToSend = [
-          { role: "user", content: message.content },
-          { role: "assistant",  content: assistantMessageContent, 
-            ...(imageUrls.length > 0 && { images: imageUrls }) // Only include images if not empty
-          },
-        ];
-  
-        await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
-          { userId, chatId, messages: messagesToSend },
-          { withCredentials: true }
-        );
-      }
-     }
-    } catch (error) {
-      console.error("🚨 Error:", error);
-      toast.error("Failed to send message. Please try again.", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      set({ isFetching: false });
-    }finally{
-      set({isFetching:false})
+
+    // Store message in database (if not trial/expired)
+    if (subscriptionType !== "trial" && !isSubscriptionExpired) {
+      const messagesToSend = [
+        { role: "user", content: message.content },
+        { role: "assistant",  content: assistantMessageContent, 
+          ...(imageUrls.length > 0 && { images: imageUrls }) // Only include images if not empty
+        },
+      ];
+
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
+        { userId, chatId, messages: messagesToSend },
+        { withCredentials: true }
+      );
     }
-  },
+   }
+  } catch (error) {
+    console.error("🚨 Error:", error);
+    toast.error("Failed to send message. Please try again.", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    set({ isFetching: false });
+  }finally{
+    set({isFetching:false})
+  }
+},
   // FETCH CHAT HISTORY
   fetchChatHistory: async (chatId: string) => {
     const { userId, subscriptionType } = useUserStore.getState();
@@ -340,33 +480,36 @@ export const useSidebarStore = create<SidebarState>((set) => ({
   isSidebarOpen: false, // Initial state: Sidebar is closed
   clearSidebar: () => set({ titles: [], isSidebarOpen: false }),
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })), // Toggle the sidebar state
-  fetchTitles: async () => {
+  fetchTitles: async (token:any) => {
     const { userId, subscriptionType } = useUserStore.getState();
-  console.log("called first")
+  
     if (subscriptionType === "trial") {
       // console.log("fetchTitles")
       useSubscriptionPopup.getState().setShowUpgradePopup(true); // Show upgrade popup
       return;
     }
-  
+    
       // Ensure the userId exists before proceeding with the request
       if (!userId) {
         console.error("User not authenticated, no userId found.");
         return;
       }
+      
     try {
+      
+      console.log("title function calling")
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/titles`, {
         params: { userId }, 
-        withCredentials:true,// Replace with the actual user ID
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
-      console.log("response:title",response.data.titles);
+      console.log("response-title",response.data);
     
       set({ titles: response.data.titles });
     } catch (error) {
       console.error('Error fetching chat titles:', error);
     }
   },
-
   addChat: async () => {
     const { subscriptionType ,subscriptionEndDate } = useUserStore.getState();
   const { titles } = useSidebarStore.getState(); // Get the current chat titles
@@ -393,7 +536,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
     
     // Update the local state immediately
     set((state) => ({
-      titles: [newChat,...state.titles ]
+      titles: [...(state.titles || []), newChat] // Handle undefined case
     }));
 
      // Sync with the chats store
