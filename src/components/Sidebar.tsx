@@ -1,3 +1,4 @@
+
 import React from 'react';
   import { Edit2, Trash2, MessageSquare, Plus } from 'lucide-react';
   import { useSidebarStore,useStore, useUserStore } from '../store/useStore';
@@ -11,6 +12,7 @@ import axios from 'axios';
     const {titles,addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
     const {currentChat,setCurrentChat,fetchChatHistory} = useStore();
     console.log("currentChat:",currentChat)
+    console.log("titles",titles);
     const handleEditTitle =async (chatId: string, currentTitle: string) => {
       const newTitle = prompt('Enter new chat title:', currentTitle);
       // console.log("newtitle",newTitle)
