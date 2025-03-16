@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
   export function Sidebar() {
     console.log("sidebar calling")
-    const { titles = [],addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
+    const { titles,addChat,updateChatTitle,deleteChat,isSidebarOpen,fetchTitles} = useSidebarStore(); 
     const {currentChat,setCurrentChat,fetchChatHistory} = useStore();
     console.log("currentChat:",currentChat)
     console.log("titles",titles);
