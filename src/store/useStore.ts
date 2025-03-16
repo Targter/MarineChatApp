@@ -76,173 +76,6 @@ export const useStore = create<State>((set, get) => ({
 
   setCurrentChat: (id) => set({ currentChat: id }),
 
-//   addMessage: async (chatId, message) => {
-//     const { subscriptionEndDate, subscriptionType, userId } = useUserStore.getState();
-//     const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
-//     console.log("calledAddMessage")
-//     const isTrialUser = subscriptionType === "trial";
-//     const isPremium = subscriptionType === "premium" || subscriptionType === "7-day-premium";
-//     const fetchImages = isPremium && !isSubscriptionExpired; // Fetch images only for premium users
-  
-  
-//     if ( isSubscriptionExpired) {
-//       toast.warn("Trial users cannot store chats. Please upgrade your subscription.", {
-//         position: "bottom-right",
-//         autoClose: 2000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//       });
-//     return 
-//     }
-
-//     const apiUrl =
-//     subscriptionType === "trial"
-//       ? import.meta.env.VITE_TRIAL_URL
-//       : import.meta.env.VITE_PREMIUM_URL;
-
-//       set({ isFetching: true });
-
-//     set((state) => ({ isTyping: !state.isTyping }));
-  
-//     // Add user message to chat
-//     const chats = useStore.getState().chats;
-//   const chat = chats.find((chat) => chat.id === chatId);
-//   const history = chat
-//     ? chat.messages.slice(-4).map((msg) => ({
-//         role: msg.role === "user" ? "user" : "assistant",
-//         parts: [msg.content],
-//       }))
-//     : [];
-
-//     set((state) => {
-//       const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
-//       const newChats = [...state.chats];
-    
-//       if (chatIndex === -1) {
-//         newChats.push({ id: chatId, title: "New Chat", messages: [] });
-//       }
-    
-//       const chat = newChats.find((chat) => chat.id === chatId);
-//       chat.messages = [...chat.messages, { 
-//         id: crypto.randomUUID(), 
-//         content: message.content, 
-//         role: "user", 
-//         timestamp: Date.now() 
-//       }];
-    
-//       return { chats: newChats };
-//     });
-//     try {
-//       if((subscriptionType === "trial")){
-      
-//       const response = await axios.get(
-//         `${apiUrl}${message.content}`,
-//         {
-//           headers: { "Content-Type": "application/json" },
-//         }
-//       );
-//       console.log("response:",response)
-//       if (response.status !== 200) {
-//         set({ isFetching: false });
-//         console.error("API request failed:", response.status, response.statusText);
-//         return;
-//       }
-
-//       const assistantMessageContent = response.data; // Set AI response
-//       let assistantMessageId = crypto.randomUUID();
-
-//       // Add assistant message to chat
-//       set((state) => {
-//         const chats = [...state.chats];
-//         const chat = chats.find((chat) => chat.id === chatId);
-//         if (chat) {
-//           chat.messages.push({
-//             id: assistantMessageId,
-//             content: assistantMessageContent,
-//             role: "assistant",
-//             timestamp: Date.now(),
-//           });
-//         }
-//         return { chats };
-//       });
-//      }
-//      else{
-//       // console.log("premium user url")
-//       const response = await fetch(apiUrl, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({
-//           query: message.content,
-//           history: history,
-//           top_k: 3,
-//         }),
-//       });
-  
-//       if (!response.ok) {
-//         set({ isFetching: false });
-//         console.error("API request failed:", response.status, response.statusText);
-//         return;
-//       }
-  
-//       const data = await response.json();
-//       console.log("data:",data)
-// // Extract text and images from the response
-//     const assistantMessageContent = data.text; // Get the text content
-//       const imageUrls = data.images || []; // Get the image URLs (default to an empty array if no images)
-
-// // Generate a unique ID for the assistant message
-// let assistantMessageId = crypto.randomUUID();
-
-// // Initialize assistant message in chat
-// set((state) => {
-//   const chats = [...state.chats];
-//   const chat = chats.find((chat) => chat.id === chatId);
-//   if (chat) {
-//     chat.messages.push({
-//       id: assistantMessageId,
-//       content: marked.parse(assistantMessageContent), // Parse markdown and set content
-//       role: "assistant",
-//       timestamp: Date.now(),
-//       images: imageUrls, // Add all image URLs to the message
-//     });
-//   }
-//   return { chats, isFetching: false }
-// })
-  
-//       // Store message in database (if not trial/expired)
-//       if (subscriptionType !== "trial" && !isSubscriptionExpired) {
-//         const messagesToSend = [
-//           { role: "user", content: message.content },
-//           { role: "assistant",  content: assistantMessageContent, 
-//             ...(imageUrls.length > 0 && { images: imageUrls }) // Only include images if not empty
-//           },
-//         ];
-  
-//         await axios.post(
-//           `${import.meta.env.VITE_BACKEND_URL}/api/updateData`,
-//           { userId, chatId, messages: messagesToSend },
-//           { withCredentials: true }
-//         );
-//       }
-//      }
-//     } catch (error) {
-//       console.error("🚨 Error:", error);
-//       toast.error("Failed to send message. Please try again.", {
-//         position: "bottom-right",
-//         autoClose: 2000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//       });
-//       set({ isFetching: false });
-//     }finally{
-//       set({isFetching:false})
-//     }
-//   },
-
     addMessage: async (chatId, message) => {
     const { subscriptionEndDate, subscriptionType, userId } = useUserStore.getState();
     const isSubscriptionExpired = subscriptionEndDate && new Date(subscriptionEndDate) < new Date();
@@ -269,40 +102,72 @@ export const useStore = create<State>((set, get) => ({
       ? import.meta.env.VITE_TRIAL_URL
       : import.meta.env.VITE_PREMIUM_URL;
 
-      set({ isFetching: true });
+  //     set({ isFetching: true });
 
-    set((state) => ({ isTyping: !state.isTyping }));
+  //   set((state) => ({ isTyping: !state.isTyping }));
   
-    // Add user message to chat
-    const chats = useStore.getState().chats;
-  const chat = chats.find((chat) => chat.id === chatId);
-  const history = chat
-    ? chat.messages.slice(-2).map((msg) => ({
-        role: msg.role === "user" ? "user" : "assistant",
-        parts: [msg.content],
-      }))
-    : [];
+  //   // Add user message to chat
+  //   const chats = useStore.getState().chats;
+  // const chat = chats.find((chat) => chat.id === chatId);
+  // const history = chat
+  //   ? chat.messages.slice(-2).map((msg) => ({
+  //       role: msg.role === "user" ? "user" : "assistant",
+  //       parts: [msg.content],
+  //     }))
+  //   : [];
 
-    set((state) => {
-      const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
-      const newChats = [...state.chats];
+  //   set((state) => {
+  //     const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
+  //     const newChats = [...state.chats];
     
-      if (chatIndex === -1) {
-        newChats.push({ id: chatId, title: "HEHE", messages: [] });
-      }
+  //     if (chatIndex === -1) {
+  //       newChats.push({ id: chatId, title: "HEHE", messages: [] });
+  //     }
     
-      const chat = newChats.find((chat) => chat.id === chatId);
-      chat.messages = [...chat.messages, { 
-        id: crypto.randomUUID(), 
-        content: message.content, 
-        role: "user", 
-        timestamp: Date.now() 
-      }];
+  //     const chat = newChats.find((chat) => chat.id === chatId);
+  //     chat.messages = [...chat.messages, { 
+  //       id: crypto.randomUUID(), 
+  //       content: message.content, 
+  //       role: "user", 
+  //       timestamp: Date.now() 
+  //     }];
 
       
     
-      return { chats: newChats };
-    });
+  //     return { chats: newChats };
+  //   });
+
+
+  set((state) => ({ isTyping: !state.isTyping }));
+ 
+  // Add user message to chat
+  const chats = useStore.getState().chats;
+const chat = chats.find((chat) => chat.id === chatId);
+const history = chat
+  ? chat.messages.slice(-4).map((msg) => ({
+      role: msg.role === "user" ? "user" : "assistant",
+      parts: [msg.content],
+    }))
+  : [];
+
+  set((state) => {
+    const chatIndex = state.chats.findIndex((chat) => chat.id === chatId);
+    const newChats = [...state.chats];
+
+    if (chatIndex === -1) {
+      newChats.push({ id: chatId, title: "New Chat", messages: [] });
+    }
+
+    const chat = newChats.find((chat) => chat.id === chatId);
+    chat.messages = [...chat.messages, { 
+      id: crypto.randomUUID(), 
+      content: message.content, 
+      role: "user", 
+      timestamp: Date.now() 
+    }];
+
+    return { chats: newChats };
+  });
     try {
       if((subscriptionType === "trial")){
       
@@ -477,7 +342,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })), // Toggle the sidebar state
   fetchTitles: async () => {
     const { userId, subscriptionType } = useUserStore.getState();
-  
+  console.log("called first")
     if (subscriptionType === "trial") {
       // console.log("fetchTitles")
       useSubscriptionPopup.getState().setShowUpgradePopup(true); // Show upgrade popup
@@ -494,16 +359,14 @@ export const useSidebarStore = create<SidebarState>((set) => ({
         params: { userId }, 
         withCredentials:true,// Replace with the actual user ID
       });
-      console.log("response:title",response.data);
-      // const reversedTitles = response.data.titles.reverse();
-      // const reversedTitles = response.data.titles;
-
-      // Update the state with the reversed titles
+      console.log("response:title",response.data.titles);
+    
       set({ titles: response.data.titles });
     } catch (error) {
       console.error('Error fetching chat titles:', error);
     }
   },
+
   addChat: async () => {
     const { subscriptionType ,subscriptionEndDate } = useUserStore.getState();
   const { titles } = useSidebarStore.getState(); // Get the current chat titles
