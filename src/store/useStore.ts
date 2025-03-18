@@ -240,7 +240,7 @@ set((state) => {
           },
         ];
   
-        await axios.post(
+        const aa = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}api/updateData`,
           { userId, chatId, messages: messagesToSend },
            {
@@ -248,6 +248,7 @@ set((state) => {
             withCredentials: true,
           }
         );
+        console.log(aa);
       }
      }
     } catch (error) {
