@@ -43,12 +43,12 @@ const Pagecon = () => {
         }
       );
       console.log("response:", response);
-      console.log("userId:",user.id, " ab",user._id);
+      
       if (response.data.authenticated) {
         setUserData({
-          userId: user.id,
+          userId: response.data.user._id,
           username: `${user.firstName} ${user.lastName}`,
-          email: user.primaryEmailAddress.emailAddress,
+          email: response.data.user.email,
           subscriptionType: response.data.user.subscriptionType,
           subscriptionEndDate: response.data.user.subscriptionEndDate
             ? new Date(response.data.user.subscriptionEndDate)
