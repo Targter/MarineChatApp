@@ -8,13 +8,17 @@ import {
   useUserStore,
 } from "../store/useStore";
 
+import { useAuth } from "@clerk/clerk-react"; // Update
+
 const ChatInputBox = memo(() => {
   const inputRef = useRef(null); // ✅ Correct ref initialization
   const { addChat } = useSidebarStore();
+
+  const { getToken } = useAuth();
   const { currentChat, addMessage } = useStore();
   const { getIsProcessing, setIsProcessing } = useProcessingStore();
   const { setTypingComplete } = useTypingStore();
-  
+
   const { subscriptionEndDate } = useUserStore();
 
   const isProcessing = currentChat ? getIsProcessing(currentChat) : false;
@@ -36,6 +40,9 @@ const ChatInputBox = memo(() => {
     async (e) => {
       e?.preventDefault();
 
+      const token = await getToken();
+      console.log("message", token);
+
       setIsProcessing(currentChat, true);
       setTypingComplete(currentChat, false);
 
@@ -56,9 +63,9 @@ const ChatInputBox = memo(() => {
       if (!currentChat) {
         console.log("called:");
         const newChatId = await addChat();
-        await addMessage(newChatId, message);
+        await addMessage(newChatId, message, token);
       } else {
-        await addMessage(currentChat, message);
+        await addMessage(currentChat, message, token);
       }
 
       setIsProcessing(currentChat, false);

@@ -403,6 +403,12 @@ export default function Register() {
   // const { issigne } = useAuth();
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (isSignedIn) {
+  //     navigate("/"); // Manually redirect after login
+  //   }
+  // }, [isSignedIn, navigate]);
+
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <SignUp
