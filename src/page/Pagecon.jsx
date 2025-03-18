@@ -43,6 +43,7 @@ const Pagecon = () => {
         }
       );
       console.log("response:", response);
+      console.log("userId:",user.id, " ab",user._id);
       if (response.data.authenticated) {
         setUserData({
           userId: user.id,
