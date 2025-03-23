@@ -1,4 +1,4 @@
-npm run devv
+npm run dev
 
 
 
