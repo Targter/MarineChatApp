@@ -1,4 +1,4 @@
-#to run this app : npm run dev
+ npm run dev
 
 
 
