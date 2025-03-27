@@ -23,7 +23,7 @@ console.log("userId:",userId,subscriptionType)
   const handleUpgrade = async (e,plan) => {
     e.preventDefault();
     try {
-      console.log(e,plan)
+      console.log("this will called",plan)
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}sub/renewsubscription`,
         { userId: userId, subscriptionType: plan },
