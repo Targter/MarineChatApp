@@ -1,4 +1,4 @@
-To start the server: npm run dev
+ start the server: npm run dev
 
 
 
